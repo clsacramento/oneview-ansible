@@ -16,7 +16,7 @@
 # Displays  the power state of a given server hardware
 # Input: server_hardware_name (string): name of the server_hardware
 # Will search for a server_hardware with the given name and
-# sets the ps fact with its power state.
+# sets the power_state fact with its power state.
 # Usage example: ansible-playbook -i hosts servers/hardware_get_pw.yaml --extra-vars '{"server_hardware_name":"MXQ703022T, bay 1"}'
 ---
     - name: Check server hardware name is given
@@ -40,7 +40,7 @@
       when: not server_hardwares
 
     - name: Set ps fact for the provided server name
-      set_fact: ps="{{ server_hardwares.0.powerState }}"
+      set_fact: power_state="{{ server_hardwares.0.powerState }}"
 
     - name: Outputs power state fact
-      debug: var=ps
+      debug: var=power_state

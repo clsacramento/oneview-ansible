@@ -13,38 +13,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 ###
-# Lists all the server hardware names
-# Usage example: ansible-playbook -i hosts playbooks/hardware_list.ymal
+#Obtains the list of hardware that is available. Available means the server hardware is not assigned to any server profile.
+#Sets a fact with the list
+#Output: available_hardware (list[string]): list of server hardware that are unassigned
 ---
-- hosts: all
-  vars:
-    - config: "{{ config_path }}"
-  tasks:
-    - name: Gather facts about all Server Hardwares
-      oneview_server_hardware_facts:
-        config: "{{ config }}"
-      delegate_to: localhost
-
-#    - name: Gather paginated, filtered and sorted facts about Server Hardware
-#      oneview_server_hardware_facts:
-#        config: "{{ config }}"
-#        params:
-#          start: 0
-#          sort: name:ascending
-#          filter: uidState='Off'
-#      delegate_to: localhost
-
-    - debug: msg="{{server_hardwares | map(attribute='name') | list }}"
-#    - debug: msg="{{server_hardwares | map(attribute='serverProfileUri') | list }}"
 
     - name: Create empty list to store unnasigned server hardware
       set_fact: free_hardware=[]
 
     - name: find server hardware that are avialable
-      set_fact: 
+      set_fact:
         available_hardware: "{{ free_hardware }} + [ '{{ item.name }}' ]"
       when: not item.serverProfileUri
       with_items: "{{ server_hardwares }}"
-     
+
     - name: output available hardware list
       debug: var=available_hardware
+

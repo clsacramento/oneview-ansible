@@ -30,17 +30,15 @@
       debug: var=server_hardware_name
 
     - name: Sets default power state
-      set_fact: power_state="On"
-      when: not power_state
+      set_fact: power_state="{{ ps | default('On') }}"
 
     - name: Sets default power control
-      set_fact: power_control="MomentaryPress"
-      when: not power_control
+      set_fact: power_control="{{ pc | default('MomentaryPress') }}"
 
     - name: Outputs given power_state
       debug: var=power_state
 
-    - name: Outputs given server_hardware_name
+    - name: Outputs given power control
       debug: var=power_control
 
     - name: Gather facts about a Server Hardware by name

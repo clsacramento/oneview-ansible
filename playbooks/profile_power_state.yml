@@ -29,4 +29,4 @@
     - include: ../servers_tasks/hardware_get_name_by_uuid.yml 
     - include: ../servers_tasks/hardware_get_pw.yaml
     - include: ../servers_tasks/hardware_set_pw.yaml
-      when: ps is defined
+      when: ps is defined and ps
