@@ -13,17 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 ###
-# Display  the power stae of a given server
+# Displays  the power state of a given server hardware
 # Input: server_hardware_name (string): name of the server_hardware
 # Will search for a server_hardware with the given name and
-# set the ps fact with its power state.
+# sets the ps fact with its power state.
 # Usage example: ansible-playbook -i hosts servers/hardware_get_pw.yaml --extra-vars '{"server_hardware_name":"MXQ703022T, bay 1"}'
 ---
-#- hosts: all
-#  vars:
-#    - config: "{{ config_path }}"
-#    - server_hardware_name: "{{ name | default('MXQ703022T, bay 1') }}"
-#  tasks:
     - name: Check server hardware name is given
       fail:
         msg: "Server hardware name was not given." 

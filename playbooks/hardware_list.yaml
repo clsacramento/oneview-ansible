@@ -13,12 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 ###
+# Lists all the server hardware names
+# Usage example: ansible-playbook -i hosts playbooks/hardware_list.ymal
 ---
 - hosts: all
   vars:
     - config: "{{ config_path }}"
-    # name examples: "172.18.6.15", "Encl1, bay 1"
-    - server_hardware_name: "MXQ703022T, bay 1"
   tasks:
     - name: Gather facts about all Server Hardwares
       oneview_server_hardware_facts:
@@ -31,7 +31,6 @@
         config: "{{ config }}"
         params:
           start: 0
-#          count: 4
           sort: name:ascending
           filter: uidState='Off'
       delegate_to: localhost

@@ -15,6 +15,8 @@
 ###
 # Display  the power stae of a given server
 # Input: server_hardware_name (string): name of the server_hardware
+#        ps (string): power_state to set on the server hardware (default On).
+#        pc (string): power_control to apply (default MomentaryPress).
 # Will search for a server_hardware with the given name and
 # set the ps fact with its power state.
 # Usage example: ansible-playbook -i hosts servers/hardware_get_pw.yaml --extra-vars '{"server_hardware_name":"MXQ703022T, bay 1"}'
@@ -24,10 +26,18 @@
     - config: "{{ config_path }}"
       power_state: "{{ ps | default('On') }}"
       power_control: "{{ pc | default('MomentaryPress') }}"
-#    - server_hardware_name: "{{ name | default('MXQ703022T, bay 1') }}"
   tasks:
+    - name: Check if server hardware name was given
+      fail:
+        msg: "No server hardware name was given."
+      when: not server_hardware_name
+
     - name: Outputs given server_hardware_name
       debug: var=server_hardware_name
+
+    - name: Sets default power state
+      set_fact: power_state="On"
+      when: not power_state
 
     - name: Outputs given power_state
       debug: var=power_state

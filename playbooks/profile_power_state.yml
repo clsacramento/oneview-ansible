@@ -35,6 +35,6 @@
 #      set_fact: hw_uuid="{{ server_uri.split('/')[-1] }}"
 #    - debug: var=hw_uuid
 #
-    - include: profile_get_hw.yml 
-    - include: hardware_get_name_by_uuid.yml 
-    - include: hardware_get_pw.yaml
+    - include: ../servers_tasks/profile_get_hw.yml 
+    - include: ../servers_tasks/hardware_get_name_by_uuid.yml 
+    - include: ../servers_tasks/hardware_get_pw.yaml

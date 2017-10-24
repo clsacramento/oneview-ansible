@@ -13,16 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 ###
-# Obtains and display  a server hardware name from a given server hardware uuid
+# Obtains and displays a server hardware name from a given server hardware uuid
 # Input: server_hardware_uuid (string): uuid of a server hardware
 # Output: server_hardware_name (string): name of the given server hardware
 ---
-#- hosts: all
-#  vars:
-#    - config: "{{ playbook_dir }}/oneview_config.json"
-    # name examples: "172.18.6.15", "Encl1, bay 1"
-#    - server_hardware_uuid: "MXQ703022T, bay 1"
-#  tasks:
     - name: Prints hardware uuid
       debug: var=server_hardware_uuid 
 
