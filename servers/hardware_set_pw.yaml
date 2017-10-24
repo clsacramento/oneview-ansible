@@ -1,0 +1,54 @@
+###
+# Copyright (2016-2017) Hewlett Packard Enterprise Development LP
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# You may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+###
+# Display  the power stae of a given server
+# Input: server_hardware_name (string): name of the server_hardware
+# Will search for a server_hardware with the given name and
+# set the ps fact with its power state.
+# Usage example: ansible-playbook -i hosts servers/hardware_get_pw.yaml --extra-vars '{"server_hardware_name":"MXQ703022T, bay 1"}'
+---
+- hosts: all
+  vars:
+    - config: "{{ config_path }}"
+      power_state: "{{ ps | default('On') }}"
+      power_control: "{{ pc | default('MomentaryPress') }}"
+#    - server_hardware_name: "{{ name | default('MXQ703022T, bay 1') }}"
+  tasks:
+    - name: Outputs given server_hardware_name
+      debug: var=server_hardware_name
+
+    - name: Outputs given power_state
+      debug: var=power_state
+
+    - name: Outputs given server_hardware_name
+      debug: var=power_control
+
+    - name: Gather facts about a Server Hardware by name
+      oneview_server_hardware_facts:
+        config: "{{ config }}"
+        name: "{{ server_hardware_name }}"
+      delegate_to: localhost
+
+    - name: Set power_state for server_hardware_name
+      oneview_server_hardware:
+        config: "{{ config }}"    
+        state: power_state_set
+        data:
+          name : "{{ server_hardware_name }}"
+          powerStateData:
+            powerState : "{{ power_state }}"
+            powerControl : "{{ power_control }}"
+      delegate_to: localhost
+

@@ -1,0 +1,8 @@
+---
+    - name: Gather facts about all Server Profiles
+      oneview_server_profile_facts:
+        config: "{{ config }}"
+      delegate_to: localhost
+
+    - debug: msg="{{server_profiles | map(attribute='name') | list }}"
+
