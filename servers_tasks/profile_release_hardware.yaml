@@ -1,0 +1,16 @@
+---
+    - name: Gather facts about all Server Profiles
+      oneview_server_profile_facts:
+        config: "{{ config }}"
+      delegate_to: localhost
+
+    - name: Unassign Server Hardware from Server Profile
+      oneview_server_profile:
+        config: "{{ config }}"
+        # This is required for unassigning a SH, or creating a SP and not auto-assigning a SH
+        auto_assign_server_hardware: False
+        data:
+          name: "{{ server_profile_name }}"
+          # Specify a blank serverHardwareName or serverHardwareUri when auto_assign_server_hardware is False to unassign a SH
+          serverHardwareName:
+      delegate_to: localhost
