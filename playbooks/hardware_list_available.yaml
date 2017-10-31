@@ -13,7 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 ###
-# Lists all the server hardware names
+# Lists all the server hardware that is available
+# Sets a fact containing on array with the names (string) of the servers
+# A server hardware is considered available when it does not have a 
+# profile applied to it.
 # Usage example: ansible-playbook -i hosts playbooks/hardware_list.ymal
 ---
 - hosts: all
@@ -26,3 +29,15 @@
       delegate_to: localhost
 
     - debug: msg="{{server_hardwares | map(attribute='name') | list }}"
+
+    - name: Creates empty list to store unnasigned server hardware
+      set_fact: free_hardware=[]
+
+    - name: find server hardware that are avialable (not assigned to any profile)
+      set_fact: 
+        available_hardware: "{{ free_hardware }} + [ '{{ item.name }}' ]"
+      when: not item.serverProfileUri
+      with_items: "{{ server_hardwares }}"
+     
+    - name: output available hardware list
+      debug: var=available_hardware
