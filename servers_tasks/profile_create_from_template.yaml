@@ -1,0 +1,13 @@
+---
+    - name: Create Server Profile from Template
+      oneview_server_profile:
+        config: "{{ config }}"
+        state: present
+#        auto_assign_server_hardware: False
+        data:
+          name: "{{ server_profile_name }}"
+          #serverHardwareTypeName: "SY 480 Gen9 1"
+          serverHardwareTypeUri: "{{ server_type_uri }}"
+          serverHardwareName: "{{ server_hardware_name }}"
+          serverProfileTemplateName: "{{ profile_template_name }}"
+      delegate_to: localhost
