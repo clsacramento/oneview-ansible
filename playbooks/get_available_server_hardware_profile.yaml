@@ -23,4 +23,34 @@
     # set the name of an existent server profile to run this example
     server_profile_name: "SY480 bay 1"
   tasks:
-    - include_tasks: ../servers_tasks/profile_available_servers.yaml
+#    - include_tasks: ../servers_tasks/profile_find_by_name.yaml
+#    - include_tasks: ../servers_tasks/profile_available_servers.yaml
+
+    - name: Check profile name is given
+      fail:
+        msg: "Server profile  name was not given."
+      when: not server_profile_name
+
+    - name: Outputs given server profile name
+      debug: var=server_profile_name
+
+#    - name: Gather facts about given server profile
+#      oneview_server_profile_facts:
+#        config: "{{ config }}"
+#        name: "{{ server_profile_name }}"
+#      delegate_to: localhost
+#      when: server_profile_name is defined
+    - name: Gather facts about given server profile
+      oneview_server_profile_facts:
+        config: "{{ config }}"
+        name: "{{ server_profile_name }}"
+      delegate_to: localhost
+      when: server_profile_name is defined
+
+
+    - name: Check server profile with given name  was found
+      fail:
+        msg: "No server profile found with the given name ({{ server_profile_name }})."
+      when: server_profiles is not defined or not server_profiles
+
+

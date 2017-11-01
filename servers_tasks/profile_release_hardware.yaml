@@ -1,9 +1,7 @@
+# Unassign hardware from a given profile
+# Input: server_profile_name (string): name of the server profile to unassign the server hardware from
+# Note: include profile_find_by_name.yaml to check profile name is given and exists
 ---
-    - name: Gather facts about all Server Profiles
-      oneview_server_profile_facts:
-        config: "{{ config }}"
-      delegate_to: localhost
-
     - name: Unassign Server Hardware from Server Profile
       oneview_server_profile:
         config: "{{ config }}"

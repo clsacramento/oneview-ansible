@@ -4,8 +4,6 @@
         config: "{{ config }}"
       delegate_to: localhost
 
-    - debug: msg="{{server_profiles | map(attribute='name') | list }}"
-
     - name: Assign Server Hardware from Server Profile
       oneview_server_profile:
         config: "{{ config }}"

@@ -1,0 +1,21 @@
+---
+    - name: Check server profile template name is given
+      fail:
+        msg: "Server profile template name was not given."
+      when: profile_template_name is not defined or not profile_template_name
+
+    - name: Outputs given server profile template name name
+      debug: var=profile_template_name
+
+    - name: Gather facts about given server profile template
+      oneview_server_profile_template_facts:
+        config: "{{ config }}"
+        name: "{{ profile_template_name }}"
+      delegate_to: localhost
+      when: profile_template_name is defined
+
+    - name: Check if server profile template with given name was found
+      fail:
+        msg: "No server profile template found with the given name ({{ profile_template_name }})."
+      when: server_profile_templates is not defined or not server_profile_templates
+

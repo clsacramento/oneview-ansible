@@ -6,3 +6,8 @@
 
     - debug: msg="{{server_profiles | map(attribute='name') | list }}"
 
+    - name: create json
+      copy:
+        content: "{{ server_profiles }}"
+        dest: /tmp/prof.json
+

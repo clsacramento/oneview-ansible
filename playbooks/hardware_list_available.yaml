@@ -17,27 +17,12 @@
 # Sets a fact containing on array with the names (string) of the servers
 # A server hardware is considered available when it does not have a 
 # profile applied to it.
-# Usage example: ansible-playbook -i hosts playbooks/hardware_list.ymal
+# Usage example: ansible-playbook -i hosts playbooks/hardware_list_available.yaml
 ---
 - hosts: all
   vars:
     - config: "{{ config_path }}"
   tasks:
-    - name: Gather facts about all Server Hardwares
-      oneview_server_hardware_facts:
-        config: "{{ config }}"
-      delegate_to: localhost
+    - include_tasks: ../servers_tasks/hardware_available_list.yaml
+    - include_tasks: ../servers_tasks/hardware_pick_one_available.yaml
 
-    - debug: msg="{{server_hardwares | map(attribute='name') | list }}"
-
-    - name: Creates empty list to store unnasigned server hardware
-      set_fact: free_hardware=[]
-
-    - name: find server hardware that are avialable (not assigned to any profile)
-      set_fact: 
-        available_hardware: "{{ free_hardware }} + [ '{{ item.name }}' ]"
-      when: not item.serverProfileUri
-      with_items: "{{ server_hardwares }}"
-     
-    - name: output available hardware list
-      debug: var=available_hardware

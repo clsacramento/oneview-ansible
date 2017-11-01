@@ -21,6 +21,7 @@
   vars:
     config: "{{ config_path }}"
     # set the name of an existent server profile to run this example
-    server_profile_name: "SY480 bay 1"
+#    server_profile_name: "SY480 bay 1"
   tasks:
+    - include_tasks: ../servers_tasks/profile_find_by_name.yaml
     - include_tasks: ../servers_tasks/profile_release_hardware.yaml

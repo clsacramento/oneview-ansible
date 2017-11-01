@@ -37,7 +37,7 @@
     - name: set fact for hardwre uri
       set_fact: server_hardware_uri="{{ server_profiles[0].serverHardwareUri }}"
 
-    - debug: var=server_uri
+    - debug: var=server_hardware_uri
     - name: get uuid from hardware uri
       set_fact: server_hardware_uuid="{{ server_hardware_uri.split('/')[-1] }}"
     - debug: var=server_hardware_uuid

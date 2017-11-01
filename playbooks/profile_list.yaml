@@ -13,16 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 ###
-# Lists all the server hardware names
-# Usage example: ansible-playbook -i hosts playbooks/hardware_list.yaml
+# Lists all the server hardware that is available
+# Sets a fact containing on array with the names (string) of the servers
+# A server hardware is considered available when it does not have a 
+# profile applied to it.
+# Usage example: ansible-playbook -i hosts playbooks/hardware_list_available.yaml
 ---
 - hosts: all
   vars:
     - config: "{{ config_path }}"
   tasks:
-    - name: Gather facts about all Server Hardwares
-      oneview_server_hardware_facts:
-        config: "{{ config }}"
-      delegate_to: localhost
+    - include_tasks: ../servers_tasks/profile_list.yaml
 
-    - debug: msg="{{server_hardwares | map(attribute='name') | list }}"
