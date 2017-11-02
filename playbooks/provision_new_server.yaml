@@ -45,4 +45,4 @@
     - include_tasks: ../servers_tasks/hardware_get_pw.yaml
     - include_tasks: ../servers_tasks/hardware_set_pw.yaml
       when: ps is defined and ps
-
+    - include_tasks: ../servers_tasks/profile_get_connections.yaml
