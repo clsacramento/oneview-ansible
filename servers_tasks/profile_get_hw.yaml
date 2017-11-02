@@ -24,16 +24,16 @@
 #    - name: Outputs given profile name
 #      debug: var=server_profile_name
 #
-#    - name: Gather facts about a Server Profile by name
-#      oneview_server_profile_facts:
-#        config: "{{ config }}"
-#        name: "{{server_profile_name}}"
-#      delegate_to: localhost
-#
-#    - name: Checks profile exists
-#      fail:
-#        msg: "The given server profile name ({{ server_profile_name }}) was not found." 
-#      when: not server_profiles
+    - name: Gather facts about a Server Profile by name
+      oneview_server_profile_facts:
+        config: "{{ config }}"
+        name: "{{server_profile_name}}"
+      delegate_to: localhost
+
+    - name: Checks profile exists or has been successfully created
+      fail:
+        msg: "The given server profile name ({{ server_profile_name }}) was not found." 
+      when: not server_profiles
 
     - name: Set fact for hardwre uri
       set_fact: server_hardware_uri="{{ server_profiles[0].serverHardwareUri }}"
