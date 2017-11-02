@@ -23,8 +23,9 @@
   vars:
     config: "{{ config_path }}"
     # set the name of an existent server profile to run this example
-    server_profile_name: "new2"
+    server_profile_name: "new_profile_full_play1"
     provisioned_nic: "ManagementNIC1"
   tasks:
     - include_tasks: ../servers_tasks/profile_find_by_name.yaml 
+    - include_tasks: ../servers_tasks/profile_get_hw.yaml 
     - include_tasks: ../servers_tasks/profile_get_connections.yaml 
