@@ -21,17 +21,28 @@
   vars:
     config: "{{ config_path }}"
     # set the name of an existent server profile to run this example
-    server_profile_name: "new_profile_full_play"
+    server_profile_name: "new_profile_full_play1"
 #    server_hardware_name: "MXQ703022T, bay 1"
     profile_template_name: "tmpl-from-profile"
+    ps: "On"
+    provisioned_nic: "ManagementNIC1"
+    hostname_field: "DomainName"
+    server_hostname: "myserver1"
   tasks:
     - include_tasks: ../servers_tasks/hardware_available_list.yaml
     - include_tasks: ../servers_tasks/hardware_pick_one_available.yaml
     - include_tasks: ../servers_tasks/hardware_find_by_name.yaml
     - include_tasks: ../servers_tasks/hardware_get_type_uri.yaml
     - include_tasks: ../servers_tasks/template_find_by_name.yaml
+    - include_tasks: ../servers_tasks/template_get_os_custom_attributes.yaml
+      # This play will complain that the profile does not exist, so will ignore the erros
     - include_tasks: ../servers_tasks/profile_find_by_name.yaml
       ignore_errors: yes
+    - include_tasks: ../servers_tasks/profile_set_data_before_create.yaml
     - include_tasks: ../servers_tasks/profile_create_from_template.yaml
-      when: server_profiles is not defined or not server_profiles
+    - include_tasks: ../servers_tasks/profile_get_hw.yaml
+    - include_tasks: ../servers_tasks/hardware_get_name_by_uuid.yaml
+    - include_tasks: ../servers_tasks/hardware_get_pw.yaml
+    - include_tasks: ../servers_tasks/hardware_set_pw.yaml
+      when: ps is defined and ps
 

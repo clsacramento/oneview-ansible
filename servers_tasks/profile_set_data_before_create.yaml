@@ -1,0 +1,55 @@
+# Sets OS Deployment Settings data for profile create
+---
+    - name: infer hostname from template name if not given
+      set_fact:
+        server_hostname: "{{ server_profile_name | replace('_','-') }}"
+      when: server_hostname is not defined
+
+    - name: Sets hostname on OS Deployment Settings if field is given
+      set_fact:
+        hostname:
+         - name: "{{ hostname_field }}"
+           value: "{{ server_hostname }}"
+      when: hostname_field is defined
+
+    - name: keep OS Deployment Setting from template if hostname is not going to change
+      set_fact: 
+        new_os_deployment_settings: "{{ template_os_deployment_settings }}"
+      when: hostname is not defined
+
+
+
+
+    # This block will only be exectued if there is data to change from template_os_deployment_settings
+    - block:
+      - name: Initilize empty new_os_custom_attributes
+        set_fact: new_os_custom_attributes=[]
+
+      - name: Copy values from template execpt hostname
+        set_fact: new_os_custom_attributes="{{ new_os_custom_attributes }} + [ {{ item }} ]"
+        when: "item.name != '{{ hostname_field }}'"
+        with_items: "{{ template_os_custom_attributes }}"
+
+      - name: Insert given hostname to the new_os_custom_attributes
+        set_fact: new_os_custom_attributes="{{ new_os_custom_attributes }} + {{ hostname }}"
+
+      - name: Add new_os_custom_attributes to a dictionary
+        set_fact: 
+          _append_dict: "{ 'osCustomAttributes': {{ new_os_custom_attributes }} }"
+
+      - name: Create new_os_deployment_settings with new_os_custom_attributes
+        set_fact:
+          new_os_deployment_settings: "{{ _append_dict }}"
+
+      - name: Copy other values from template_os_deployment_settings to the new new_os_deployment_settings
+        set_fact:
+          new_os_deployment_settings: '{{ new_os_deployment_settings|combine({item.key: item.value}) }}'
+        when: "{{ item.key != 'osCustomAttributes' }}"
+        with_dict: "{{ template_os_deployment_settings }}"
+
+
+      - name: Outputs new_os_deployment_settings that will be defined on the new profile
+        debug: var=new_os_deployment_settings
+
+      when: hostname is defined
+

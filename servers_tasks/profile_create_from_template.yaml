@@ -1,4 +1,9 @@
 ---
+    - name: Check profile name already exists
+      fail:
+        msg: "A profile with name {{ server_profile_name }} already exists. It is not possible to create two profiles with the same name."
+      when: server_profiles is defined and server_profiles
+
     - name: Create Server Profile from Template
       oneview_server_profile:
         config: "{{ config }}"
@@ -6,8 +11,9 @@
 #        auto_assign_server_hardware: False
         data:
           name: "{{ server_profile_name }}"
-          #serverHardwareTypeName: "SY 480 Gen9 1"
           serverHardwareTypeUri: "{{ server_type_uri }}"
           serverHardwareName: "{{ server_hardware_name }}"
           serverProfileTemplateName: "{{ profile_template_name }}"
+          osDeploymentSettings: "{{ new_os_deployment_settings }}"
       delegate_to: localhost
+
