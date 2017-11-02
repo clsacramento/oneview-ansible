@@ -17,7 +17,13 @@
 #Sets a fact with the list
 #Output: available_hardware (list[string]): list of server hardware that are unassigned
 ---
-    - name: Set fact for an available hardware
+    - name: Check if there are server hardware available
+      fail: 
+        msg: "There were no servers available."
+      when: free_hardware.0 == '[' 
+      #when: free_hardware is not defined or not (free_hardware | trim == '')
+
+    - name: Set fact for an available hardware from the list
       set_fact: server_hardware_name="{{ free_hardware.0 }}"
 
     - name: Outputs available server hardware name from list
