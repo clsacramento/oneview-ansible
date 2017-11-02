@@ -25,6 +25,7 @@
     # set the name of an existent server profile to run this example
     server_profile_name: "new_profile_full_play1"
     provisioned_nic: "ManagementNIC1"
+    hostname_field: "DomainName"
   tasks:
     - include_tasks: ../servers_tasks/profile_find_by_name.yaml 
     - include_tasks: ../servers_tasks/profile_get_hw.yaml 

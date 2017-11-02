@@ -14,17 +14,38 @@
 # limitations under the License.
 ###
 ---
-    - fail:
-        msg: "The given server profile name ({{ server_profile_name }}) was not found." 
-      when: not server_profiles
+    - name: set fact for profile_os_deployment_settings
+      set_fact: 
+        profile_os_deployment_settings: "{{ server_profiles[0].osDeploymentSettings }}"
 
-    - name: set fact for profile connectins
-      set_fact: profile_connections="{{ server_profiles[0].osDeploymentSettings.osCustomAttributes }}"
+    - name: set fact for profile_os_custom_attributes
+      set_fact:
+        profile_os_custom_attributes: "{{ profile_os_deployment_settings.osCustomAttributes }}"
 
-#    - debug: var=profile_connections
-
-    - set_fact: provisioned_ip="{{ item.value }}"
+    - name: set fact for provisioned_ip
+      set_fact: 
+        provisioned_ip: "{{ item.value }}"
       when: "item.name == '{{ provisioned_nic }}.ipaddress'"
-      with_items: "{{ profile_connections }}"
+      with_items: "{{ profile_os_custom_attributes }}"
 
     - debug: var=provisioned_ip
+
+    - name: set fact for provisioned_domain
+      set_fact: 
+        provisioned_domain: "{{ item.value }}"
+      when: "item.name == '{{ provisioned_nic }}.domain'"
+      with_items: "{{ profile_os_custom_attributes }}"
+
+    - debug: var=provisioned_domain
+
+    - block:
+      - debug: var=hostname_field
+      - name: set fact for server_hostname
+        set_fact: 
+          server_hostname: "{{ item.value }}"
+        when: "hostname_field is defined and item.name == '{{ hostname_field }}'"
+        with_items: "{{ profile_os_custom_attributes }}"
+
+      - name: Outputs server hostname if available
+        debug: var=server_hostname
+      when: hostname_field is defined
