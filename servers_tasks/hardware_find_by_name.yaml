@@ -13,13 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 ###
-# Displays  the power state of a given server hardware
-# Input: server_hardware_name (string): name of the server hardware
 # Will search for a server_hardware with the given name and
 # obtain information about the given hardware that can be accessed
-# with the server_hardwares variable
+# with the server_hardwares variable that will be set
 # Will fail on purpose if no server hardware is found with the given name.
 # Include before any tasks that require the server hardware to exist.
+# Input: server_hardware_name (string): name of the server hardware
 # Usage example: - include_tasks: ../servers_tasks/hardware_find_by_name.yaml
 ---
     - name: Check server hardware name is given

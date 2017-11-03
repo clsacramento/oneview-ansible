@@ -13,14 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 ###
-# will get a list of avaialbe servers for the given profile
+# Assign a given server profile to a given hardware
 # Input: server_profile_name (string): name of the profile
-# Example: ansible-playbook -i hosts playbooks/get_available_server_hardware_profile.yaml --extra-vars '{"server_profile_name":"SY480 bay 1"}'
+# Input: server_hardware_name (string): name of the server hardware
+# Example: ansible-playbook -i hosts playbooks/assign_profile_to_hardware.yaml --extra-vars '{"server_profile_name":"SY480 bay 1", "server_hardware_name":"MXQ703022T, bay 1"}'
 ---
 - hosts: all
   vars:
     config: "{{ config_path }}"
-    # set the name of an existent server profile to run this example
     server_profile_name: "SY480 bay 1"
     server_hardware_name: "MXQ703022T, bay 1"
   tasks:

@@ -13,11 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 ###
-# Displays  the power state of a given server hardware
-# Input: server_hardware_name (string): name of the server_hardware
-# Will search for a server_hardware with the given name and
-# sets the power_state fact with its power state.
-# Usage example: ansible-playbook -i hosts servers/hardware_get_pw.yaml --extra-vars '{"server_hardware_name":"MXQ703022T, bay 1"}'
+# Displays the server_type_uri for a  given server hardware
+# Input: server_hardwares (dict): server hardware info obtained from
+# oneview ansible module
+# Will get the hardware type for the first hardware in the dict
+# Output: server_type_uri (string): URI of the server hardware type
+# Usage example: - include_tasks: ../servers_tasks/hardware_get_type_uri.yaml_
 ---
     - name: Set server_type_uri fact for the provided server name
       set_fact: server_type_uri="{{ server_hardwares.0.serverHardwareTypeUri }}"

@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 ###
-#Obtains the list of hardware that is available. Available means the server hardware is not assigned to any server profile.
-#Sets a fact with the list
-#Output: available_hardware (list[string]): list of server hardware that are unassigned
+# Selects the first hardware that is available and outputs
+# Input: free_hardware (list[string]): list of server hardware that are unassigned
+# Ouput: server_hardware_name (string): name of the first hardware form the list
 ---
     - name: Check if there are server hardware available
       fail: 

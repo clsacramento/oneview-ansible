@@ -15,7 +15,7 @@
 ###
 #Obtains the list of hardware that is available. Available means the server hardware is not assigned to any server profile.
 #Sets a fact with the list
-#Output: available_hardware (list[string]): list of server hardware that are unassigned
+#Output: free_hardware (list[string]): list of server hardware that are unassigned
 ---
     - name: Gather facts about all Server Hardwares
       oneview_server_hardware_facts:
