@@ -21,13 +21,14 @@
   vars:
     config: "{{ config_path }}"
     # set the name of an existent server profile to run this example
-    server_profile_name: "new_profile_full_play1"
+    server_profile_name: "esx-synergyhost-04"
 #    server_hardware_name: "MXQ703022T, bay 1"
-    profile_template_name: "tmpl-from-profile"
+    profile_template_name: "ESXi-host-profile-template 1.2"
     ps: "On"
-    provisioned_nic: "ManagementNIC1"
-    hostname_field: "DomainName"
-    server_hostname: "myserver1"
+    provisioned_nic: "ManagementNIC"
+    hostname_field: "Hostname"
+    post_provisioning_tasks: "../config_tasks/add_host_to_vcenter.yaml"
+#    server_hostname: "myserver1"
   tasks:
     - include_tasks: ../servers_tasks/hardware_available_list.yaml
     - include_tasks: ../servers_tasks/hardware_pick_one_available.yaml
@@ -46,3 +47,10 @@
     - include_tasks: ../servers_tasks/hardware_set_pw.yaml
       when: ps is defined and ps
     - include_tasks: ../servers_tasks/profile_get_connections.yaml
+    - include_tasks: ../servers_tasks/profile_inventory.yaml
+    - include_tasks: ../config_tasks/wait_for_host_online.yaml
+
+- hosts: new_servers
+  tasks:
+    - include_tasks: ../config_tasks/host_test.yaml
+    - include_tasks: {{ post_provisioning_tasks }}
