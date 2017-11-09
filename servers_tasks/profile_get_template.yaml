@@ -1,0 +1,52 @@
+###
+# Copyright (2016-2017) Hewlett Packard Enterprise Development LP
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# You may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+###
+---
+#- hosts: all
+#  vars:
+#    config: "{{ config_path }}"
+    # set the name of an existent server profile to run this example
+#    server_profile_name: "SY480 bay 1"
+#  tasks:
+
+#    - name: Outputs given profile name
+#      debug: var=server_profile_name
+#
+    - name: Gather facts about a Server Profile by name
+      oneview_server_profile_facts:
+        config: "{{ config }}"
+        name: "{{server_profile_name}}"
+      delegate_to: localhost
+
+    - name: Checks profile exists or has been successfully created
+      fail:
+        msg: "The given server profile name ({{ server_profile_name }}) was not found." 
+      when: not server_profiles
+
+    - name: Set fact for profile_temaplte_uri
+      set_fact: 
+        profile_template_uri: "{{ server_profiles[0].serverProfileTemplateUri }}"
+
+    - name: Checks profile is created from template
+      fail:
+        msg: "The profile is not created from template"
+      when: not profile_template_uri
+
+    - debug: var=profile_template_uri
+
+#    - name: get uuid from hardware uri
+#      set_fact: server_hardware_uuid="{{ server_hardware_uri.split('/')[-1] }}"
+#    - debug: var=server_hardware_uuid
+

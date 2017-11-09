@@ -1,0 +1,25 @@
+---
+    - name: Gather facts about all Server Profiles
+      oneview_server_profile_facts:
+        config: "{{ config }}"
+      delegate_to: localhost
+
+    - name: Initialize list of profiles_names
+      set_fact: profiles_names=[]
+#        profiles_names: "{{server_profiles | map(attribute='name') | list }}"
+
+#    - debug: msg="{{server_profiles | map(attribute='name') | list }}"
+
+    - name: add profiles that belong to profile_template_name to the profiles_names lists
+      set_fact: 
+        profiles_names: "{{ profiles_names }} + [ '{{ item.name }}' ]"
+      when: item.serverProfileTemplateUri == template_uri
+      with_items: "{{ server_profiles }}"
+
+    - debug: var=profiles_names
+
+    - name: create json
+      copy:
+        content: "{{ server_profiles }}"
+        dest: /tmp/prof.json
+
