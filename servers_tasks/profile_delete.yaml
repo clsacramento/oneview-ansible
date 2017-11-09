@@ -1,0 +1,8 @@
+---
+    - name: Delete the Server Profile created with connections
+      oneview_server_profile:
+        config: "{{ config }}"
+        state: "absent"
+        data:
+          name: "{{ server_profile_name }}"
+      delegate_to: localhost

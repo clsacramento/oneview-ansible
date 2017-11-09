@@ -1,0 +1,17 @@
+---
+    - debug: var=hostvars[inventory_hostname].ansible_ssh_host
+
+    - name: disconnect host from vcenter
+      local_action: shell govc host.disconnect -host.ip={{ hostvars[inventory_hostname].ansible_ssh_host }}
+      register: hostdisconnect
+      changed_when: false
+
+    - debug: var=hostdisconnect.stdout_lines[-1]
+
+    - name: remove host from vcenter
+      local_action: shell govc host.remove -host.ip={{ hostvars[inventory_hostname].ansible_ssh_host }}
+      register: hostremove
+      changed_when: false
+
+    - debug: var=hostremove.stdout_lines[-1]
+
