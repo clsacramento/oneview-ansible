@@ -4,7 +4,12 @@
         config: "{{ config }}"
       delegate_to: localhost
 
-    - debug: msg="{{server_profiles | map(attribute='name') | list }}"
+    - name: Get list of profiles_names
+      set_fact:
+        profiles_names: "{{server_profiles | map(attribute='name') | list }}"
+
+#    - debug: msg="{{server_profiles | map(attribute='name') | list }}"
+    - debug: var=profiles_names
 
     - name: create json
       copy:

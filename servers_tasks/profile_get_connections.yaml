@@ -25,7 +25,7 @@
     - name: set fact for provisioned_ip
       set_fact: 
         provisioned_ip: "{{ item.value }}"
-      when: "item.name == '{{ provisioned_nic }}.ipaddress'"
+      when: item.name == (provisioned_nic + '.ipaddress')
       with_items: "{{ profile_os_custom_attributes }}"
 
     - debug: var=provisioned_ip
@@ -33,7 +33,7 @@
     - name: set fact for provisioned_domain
       set_fact: 
         provisioned_domain: "{{ item.value }}"
-      when: "item.name == '{{ provisioned_nic }}.domain'"
+      when: item.name == (provisioned_nic + '.domain')
       with_items: "{{ profile_os_custom_attributes }}"
 
     - debug: var=provisioned_domain
@@ -43,7 +43,7 @@
       - name: set fact for server_hostname
         set_fact: 
           server_hostname: "{{ item.value }}"
-        when: "hostname_field is defined and item.name == '{{ hostname_field }}'"
+        when: hostname_field is defined and item.name == hostname_field
         with_items: "{{ profile_os_custom_attributes }}"
 
       - name: Outputs server hostname if available
