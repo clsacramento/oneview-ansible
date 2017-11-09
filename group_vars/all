@@ -1,3 +1,4 @@
-config_path: /home/labtest/oneview.json
+config_path: /home/telia/config.json
+vshpere_env: /home/telia/vsphre.env
 user: root
-password: root
+password: Synergy!
