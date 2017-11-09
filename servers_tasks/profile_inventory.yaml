@@ -37,4 +37,4 @@
         groups: new_servers
         ansible_ssh_host: "{{ provisioned_ip }}"
         ansible_ssh_user: "{{ user }}"
-        ansible_ssh_password: "{{ password }}"
+        ansible_ssh_pass: "{{ password }}"
