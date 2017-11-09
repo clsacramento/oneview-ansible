@@ -36,7 +36,7 @@
     - include_tasks: ../servers_tasks/hardware_get_type_uri.yaml
     - include_tasks: ../servers_tasks/template_find_by_name.yaml
     - include_tasks: ../servers_tasks/template_get_os_custom_attributes.yaml
-      # This play will complain that the profile does not exist, so will ignore the erros
+      # This play will complain that the profile does not exist, so will ignore the error
     - include_tasks: ../servers_tasks/profile_find_by_name.yaml
       ignore_errors: yes
     - include_tasks: ../servers_tasks/profile_set_data_before_create.yaml
@@ -51,6 +51,8 @@
     - include_tasks: ../config_tasks/wait_for_host_online.yaml
 
 - hosts: new_servers
+  vars:
+    post_provisioning_tasks: "../config_tasks/add_host_to_vcenter.yaml"
   tasks:
     - include_tasks: ../config_tasks/host_test.yaml
-    - include_tasks: {{ post_provisioning_tasks }}
+    - include_tasks: "{{ post_provisioning_tasks }}"
