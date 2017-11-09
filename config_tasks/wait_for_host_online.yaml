@@ -1,9 +1,10 @@
 ---
-    - name: wait for host to come online (SSH ip)
+    - name: wait for host to come online (SSH up)
       wait_for:
         host: "{{ provisioned_ip }}"
         port: 22
-        delay: 800
-        timeout: 1800
+        delay: 300
+        sleep: 30
+        timeout: 1200
         state: started
 
