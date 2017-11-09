@@ -30,7 +30,7 @@
     - name: find server hardware that are avialable (not assigned to any profile)
       set_fact:
         free_hardware: "{{ free_hardware }} + [ '{{ item.name }}' ]"
-      when: not item.serverProfileUri and item.scopeUris
+      when: not item.serverProfileUri
       with_items: "{{ server_hardwares }}"
 
     - name: output available hardware list
