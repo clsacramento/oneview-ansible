@@ -1,0 +1,41 @@
+---
+#    - debug: var=provisioned_ip
+    - debug: var=hostvars[inventory_hostname].ansible_ssh_host
+
+    - name: vcenter list vms
+      local_action: shell . {{ vsphere_env }} && govc ls /$GOVC_DATACENTER/vm | grep -v Discovered
+      register: allvms
+      changed_when: false
+
+    - debug: var=allvms.stdout_lines
+
+    - name: vm info
+      local_action: shell . {{ vsphere_env }} && echo {{ item }} `govc vm.info -vm.ipath={{ item }} | grep Host | awk '{ print $2 }'`
+      register: vminfo
+      with_items: "{{ allvms.stdout_lines }}"
+
+    - set_fact: host_vms=[]
+
+    - set_fact: 
+        host_vms: "{{ host_vms }} + ['{{ item.stdout.split(' ')[0] }}']"
+      when: hostvars[inventory_hostname].ansible_ssh_host in item.stdout
+      with_items: "{{ vminfo.results }}"
+
+    - debug: var=host_vms
+
+    - name: power off host vms
+      local_action:  shell . {{ vsphere_env }} && govc vm.power -vm.ipath={{ item }} -off
+      with_items: "{{ host_vms }}"
+      failed_when: false
+      when: not vmotion_available
+
+    - name: migrate vms
+      local_action:  shell . {{ vsphere_env }} && govc vm.migrate -host /$GOVC_DATACENTER/host/$GOVC_CLUSTER/{{ dest_host_ip }} {{ item }}
+      with_items: "{{ host_vms }}"
+
+    - name: power on host vms after migration
+      local_action:  shell . {{ vsphere_env }} && govc vm.power -vm.ipath={{ item }} -on
+      with_items: "{{ host_vms }}"
+      failed_when: false
+      when: not vmotion_available
+

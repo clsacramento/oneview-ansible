@@ -32,12 +32,13 @@
     - include_tasks: ../servers_tasks/profile_inventory.yaml 
 - hosts: new_servers
   vars:
-    #post_provisioning_tasks: "../config_tasks/add_host_to_vcenter.yaml"
-    post_provisioning_tasks: "../config_tasks/remove_host_from_vcenter.yaml"
+    dest_host_ip: "10.88.33.138"
   tasks:
     - include_tasks: ../config_tasks/host_test.yaml
-    - include_tasks: "{{ post_provisioning_tasks }}"
-- hosts: all
+    - include_tasks: ../config_tasks/esx_evacuate.yaml
+    - include_tasks: ../config_tasks/remove_host_from_vcenter.yaml
+      ignore_errors: yes
+- hosts: local
   vars:
     ps: "Off"
   tasks:
