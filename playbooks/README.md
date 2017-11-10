@@ -12,9 +12,9 @@ Configure environment specific information:
 ### File group_vars/all
 ~~~
 #JSON file containing Oneview API endpoint details
-config: /home//config.json
+config: /home/ubuntu/config.json
 #Environment file used to perform tasks on vCenter
-vsphere_env: /home/telia/vsphere.env
+vsphere_env: /home/ubuntu/vsphere.env
 #Weather vMotion is available. If false will power off VMs before migrating
 vmotion_available: False
 #Username that will be used to connect to hosts. Should be same one configure on server profile template.
