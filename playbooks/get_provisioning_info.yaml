@@ -21,7 +21,7 @@
 ---
 - hosts: all
   vars:
-    config: "{{ config_path }}"
+    config: "{{ config }}"
     # set the name of an existent server profile to run this example
     server_profile_name: "esx-synergyhost-04"
     provisioned_nic: "ManagementNIC"
@@ -34,6 +34,7 @@
 - hosts: new_servers
   vars:
     post_provisioning_tasks: "../config_tasks/add_host_to_vcenter.yaml"
+    #post_provisioning_tasks: "../config_tasks/remove_host_from_vcenter.yaml"
   tasks:
     - include_tasks: ../config_tasks/host_test.yaml
     - include_tasks: "{{ post_provisioning_tasks }}"
