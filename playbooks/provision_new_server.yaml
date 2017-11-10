@@ -13,8 +13,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 ###
-# will get a list of avaiable server hardwares. Select one and obtain infromation about the hardware. Then will check if given profile already exists and stops otherwise. Will obtain given template from the API and customize data for the new profile, such as server hardware type and hostname if given. Then create the profile from the template and assigns to the selected hardware. Checks if created profile was correctly assigned to the selected hardware then powers on the hardare. After server is powered on, obtain the IP that was given to it and add to the ansible inventory. After it waits until the host finishes booting and is online then peform post_provisioning_tasks on the host. In this example there is a test task just to check if the local server can ssh into the new host and then a task that can be parametrized. In this example this task will add the new server to the vcenter and configure a portgroup on the host.
-# Input: server_profile_name (string): name of the profile
+# Will get a list of avaiable server hardwares and select one and obtain information about the hardware. 
+# Then will check if given profile already exists and stops otherwise. 
+# Will obtain given template from the API and customize data for the new profile, 
+# such as server hardware type and hostname if given. 
+# Then it creates the profile from the template and assigns to the selected hardware. 
+# Checks if created profile was correctly assigned to the selected hardware then powers on the hardare. 
+# After server is powered on, obtain the IP that was given to it and add to the ansible inventory. 
+# After it waits until the host finishes booting and is online then peform post_provisioning_tasks on the host. 
+# In this example there is a test task just to check if the local server can ssh into the new host 
+# and then a task that can be parametrized. 
+# In this example this task will add the new server to the vcenter and configure a portgroup on the host.
 # Example: ansible-playbook -i hosts playbooks/provision_new_server.yaml --extra-vars '{"server_profile_name":"esx-synergyhost-4"}'
 ---
 - hosts: all
