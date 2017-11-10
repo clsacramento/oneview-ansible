@@ -1,9 +1,14 @@
 ---
     - debug: var=hostvars[inventory_hostname].ansible_ssh_host
     - name: add host to vcenter
-      local_action: shell  govc cluster.add -hostname {{ hostvars[inventory_hostname].ansible_ssh_host }} -username {{ user }} -password {{ password }} -noverify
+      local_action: shell . {{ vsphere_env }} &&  govc cluster.add -hostname {{ hostvars[inventory_hostname].ansible_ssh_host }} -username {{ user }} -password {{ password }} -noverify
       register: hostadd
       changed_when: false
 
     - debug: var=hostadd.stdout_lines[-1]
+
+    - name: add host to vcenter
+      local_action: shell . {{ vsphere_env }} &&  govc host.portgroup.add -host.ip={{ hostvars[inventory_hostname].ansible_ssh_host }} -vswitch $GOVC_VSWITCH -vlan $GOVC_VLAN $GOVC_PORTGROUP
+      register: hostadd
+      changed_when: false
 
