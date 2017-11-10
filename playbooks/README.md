@@ -48,3 +48,41 @@ export GOVC_PORTGROUP='PG'
 export GOVC_VSWITCH='vSwitch1'
 export GOVC_VLAN='343'
 ~~~ 
+
+
+## Running the playbooks
+Simply use the ansible-playbook command:
+~~~
+ansible-playbook -i hosts playbooks/hardware_list_available.yaml
+~~~
+
+Some playbooks require arguments. They can be passed with '-e' option:
+~~~
+ansible-playbook -i hosts playbooks/profile_power_state.yaml -e server_profile_name=myprofile -e ps=On
+~~~
+
+## Shell wrappers for adding/removing ESX hosts
+As the playbooks to create and delete nodes on ESX became a bit longer, new_esx.sh and delete_esx.sh shell wrappers can be used. Have a look at their contents:
+~~~
+$ cat new_esx.sh
+#!/bin/bash
+server_profile_name="esx-synergyhost-04"
+profile_template_name="ESXi-host-profile-template 1.2"
+post_provisioning_tasks="../config_tasks/add_host_to_vcenter.yaml"
+
+ansible-playbook -i hosts playbooks/provision_new_server.yaml -e server_profile_name=$server_profile_name -e profile_template_name="'$profile_template_name'" -e post_provisioning_tasks=$post_provisioning_tasks
+
+$ cat delete_esx.sh
+#!/bin/bash
+server_profile_name="esx-synergyhost-04"
+post_provisioning_tasks="../config_tasks/remove_host_from_vcenter.yaml"
+
+ansible-playbook -i hosts playbooks/remove_provisioned_server.yaml -e server_profile_name=$server_profile_name -e post_provisioning_tasks=$post_provisioning_tasks
+~~~
+
+To use them, modify the values for profile and template accordingly, then execute:
+~~~
+$ ./new_esx.sh
+$ ./delete_esx.sh
+~~~
+
