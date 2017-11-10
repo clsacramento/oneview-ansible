@@ -20,7 +20,6 @@
 ---
 - hosts: all
   vars:
-    config: "{{ config }}"
     server_profile_name: "SY480 bay 1"
     server_hardware_name: "MXQ703022T, bay 1"
   tasks:

@@ -21,8 +21,7 @@
 ---
 - hosts: all
   vars:
-    - config: "{{ config }}"
-      power_state: "{{ ps | default('On') }}"
-      power_control: "{{ pc | default('MomentaryPress') }}"
+    power_state: "{{ ps | default('On') }}"
+    power_control: "{{ pc | default('MomentaryPress') }}"
   tasks:
     - include: ../servers_tasks/hardware_set_pw.yaml

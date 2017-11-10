@@ -8,4 +8,4 @@
         timeout: 1200
         state: started
 
-    - pause: seconds=60
+    - pause: seconds=180

@@ -19,7 +19,6 @@
 ---
 - hosts: all
   vars:
-    config: "{{ config }}"
     # set the name of an existent server profile to run this example
     server_profile_name: "SY480 bay 1"
   tasks:
@@ -34,12 +33,6 @@
     - name: Outputs given server profile name
       debug: var=server_profile_name
 
-#    - name: Gather facts about given server profile
-#      oneview_server_profile_facts:
-#        config: "{{ config }}"
-#        name: "{{ server_profile_name }}"
-#      delegate_to: localhost
-#      when: server_profile_name is defined
     - name: Gather facts about given server profile
       oneview_server_profile_facts:
         config: "{{ config }}"

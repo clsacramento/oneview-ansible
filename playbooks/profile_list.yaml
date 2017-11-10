@@ -20,8 +20,6 @@
 # Usage example: ansible-playbook -i hosts playbooks/hardware_list_available.yaml
 ---
 - hosts: all
-  vars:
-    - config: "{{ config }}"
   tasks:
     - include_tasks: ../servers_tasks/profile_list.yaml
 

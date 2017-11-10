@@ -17,8 +17,6 @@
 # Usage example: ansible-playbook -i hosts playbooks/hardware_list.yaml
 ---
 - hosts: all
-  vars:
-    - config: "{{ config }}"
   tasks:
     - name: Gather facts about all Server Hardwares
       oneview_server_hardware_facts:

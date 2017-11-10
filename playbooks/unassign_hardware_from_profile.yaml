@@ -19,7 +19,6 @@
 ---
 - hosts: all
   vars:
-    config: "{{ config }}"
     # set the name of an existent server profile to run this example
     server_profile_name: "SY480 Bay 4"
   tasks:
