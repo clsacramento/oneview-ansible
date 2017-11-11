@@ -13,11 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 ###
-# will get the state of a server profile or set it if ps is defined
+# will get the data for a gien profile and add it to ansible inventory.
+# Then will run the post provisioning task for the sever
+# This playbook is to be used when server profile is successfuly applied
+# but provision_new_serer playbook could not complrete for some failure.
 # Input: server_profile_name (string): name of the profile
-# Input: ps (string): if set will set the profile to the given value
-# Example: ansible-playbook -i hosts playbooks/profile_power_state.yml --extra-vars '{"server_profile_name":"SY480 bay 1"}'
-# Example: ansible-playbook -i hosts playbooks/profile_power_state.yml --extra-vars '{"server_profile_name":"SY480 bay 1", "ps":"On"}'
+# Example: ansible-playbook -i hosts playbooks/provision_retry.yaml --extra-vars '{"server_profile_name":"esx-synergyhost-04"}'
 ---
 - hosts: all
   vars:

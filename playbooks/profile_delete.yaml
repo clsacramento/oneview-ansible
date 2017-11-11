@@ -1,0 +1,38 @@
+###
+# Copyright (2016-2017) Hewlett Packard Enterprise Development LP
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# You may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+###
+# Will get the information about the given server profile with the API.
+# Gets server hardware from profile, power off than delete profile.
+# Input: server_profile_name (string): name of the profile
+# Input: dest_host_ip (string): ip of the server to where migrate VMs
+# Example: ansible-playbook -i hosts playbooks/profile_delete.yaml --extra-vars '{"server_profile_name":"esx-synergyhost-04"}'
+---
+- hosts: all
+  vars:
+    # Name of the profile to remove. This value is overwritten by what is passed with -e/--extra-vras
+    server_profile_name: "esx-synergyhost-04"
+  tasks:
+    # Obtains the given server profile
+    - include_tasks: ../servers_tasks/profile_find_by_name.yaml
+    # Obtains server hardware UUID from profile
+    - include_tasks: ../servers_tasks/profile_get_hw.yaml
+    # Retrieves server hardware name from UUID
+    - include_tasks: ../servers_tasks/hardware_get_name_by_uuid.yaml
+    # Obtains power state for the server
+    - include_tasks: ../servers_tasks/hardware_get_pw.yaml
+    # Powers off server hardware
+    - include_tasks: ../servers_tasks/hardware_set_pw.yaml
+    # Deletes server profile
+    - include_tasks: ../servers_tasks/profile_delete.yaml

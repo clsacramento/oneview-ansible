@@ -86,3 +86,14 @@ $ ./new_esx.sh
 $ ./delete_esx.sh
 ~~~
 
+## In case of issue
+
+If new_esh.sh fails but server profile was successfully created. You can run the following playbook to re-run only the configuration tasks:
+~~~
+ansible-playbook -i hosts playbooks/provision_retry.yaml --extra-vars '{"server_profile_name":"esx-synergyhost-04"}'
+~~~
+
+In case of issue when running delete_esx.sh, you may need to clean the host from the vCenter manually. In that case, the profile can be deleted from the oneview freeing up the node with the following playbook:
+~~~
+ansible-playbook -i hosts playbooks/profile_delete.yaml --extra-vars '{"server_profile_name":"esx-synergyhost-04"}'
+~~~
