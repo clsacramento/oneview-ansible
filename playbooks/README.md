@@ -4,12 +4,26 @@ These playbooks uses the server_tasks files to build on more complete use cases.
 
 ## How to use these examples
 
-First of all be sure to follow oneview-ansible main page instructions on how to install the library on your environment: [Ansible Modules for HPE OneView](https://github.com/HewlettPackard/oneview-ansible)
+### Requirements
+
+- Be sure to have git, ansible, python and python-pip installed in your system.
+
+- Install the Oneview Python SDK using the instructions found [here](https://github.com/HewlettPackard/python-hpOneView#installation).
+
+- Clone this repository:
+
+~~~
+git clone https://github.com/clsacramento/oneview-ansible.git
+~~~
+
+- Configure the OneView library environment variables pointing to the library directory from this repository. As in this [example](https://github.com/HewlettPackard/oneview-ansible#2-configure-the-ansible_library-environmental-variable).
 
 
-Configure environment specific information:
+- For the vCenter automation, install the govc utility following their [official instructions](https://github.com/vmware/govmomi/tree/master/govc#installation).
 
-### File group_vars/all
+### Configure environment specific information:
+
+#### File group_vars/all
 ~~~
 #JSON file containing Oneview API endpoint details
 config: /home/ubuntu/config.json
@@ -23,7 +37,7 @@ user: root
 password: Synergy!
 ~~~
 
-### File config.json for oneview api connection
+#### File config.json for oneview api connection
 ~~~
 {
   "ip": "10.0.0.1",
@@ -36,7 +50,7 @@ password: Synergy!
 }
 ~~~
 
-### File vsphere.env
+#### File vsphere.env
 ~~~
 export GOVC_USERNAME='administrator@vsphere.local'
 export GOVC_PASSWORD='password'
@@ -51,6 +65,10 @@ export GOVC_VLAN='343'
 
 
 ## Running the playbooks
+From the main directory of this repository:
+~~~
+cd oneview-ansible
+~~~
 Simply use the ansible-playbook command:
 ~~~
 ansible-playbook -i hosts playbooks/hardware_list_available.yaml
